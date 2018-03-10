@@ -20,4 +20,16 @@ public class CategoryService {
 		return categoryList;
 	}
 
+	public Category findAllCategoryByCid(String cid) {
+		CategoryDao dao=new CategoryDao();
+	    Category category=null;
+		try {
+			category = dao.findAllCategoryByCid(cid);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return category;
+	}
+
 }

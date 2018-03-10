@@ -41,15 +41,15 @@ public class UserService {
 		
 	}
 
-	public boolean isLogin(String username, String password) {
+	public User isLogin(String username, String password) {
 		UserDao dao=new UserDao();
-		Long isLogin=0L;
+		User user=null;
 		try {
-			isLogin=dao.isLogin(username,password);
+			user=dao.isLogin(username,password);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return isLogin>0?true:false;
+		return user;
 	}
 
 	public boolean isState(String username, String password) {

@@ -20,6 +20,7 @@ public class MailUtils {
 		// 1.创建一个程序与邮件服务器会话对象 Session
 
 		Properties props = new Properties();
+		
 		props.setProperty("mail.transport.protocol", "SMTP");
 		props.setProperty("mail.host", "smtp.163.com");
 		props.setProperty("mail.smtp.auth", "true");// 指定验证为true
@@ -27,7 +28,7 @@ public class MailUtils {
 		// 创建验证器
 		Authenticator auth = new Authenticator() {
 			public PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("18681482437", "jwy19950513");//用户名跟邮箱授权码
+				return new PasswordAuthentication("18681482437@163.com", "jwy147258");//用户名跟邮箱授权码
 			}
 		};
 

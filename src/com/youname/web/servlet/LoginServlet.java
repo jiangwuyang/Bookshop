@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.catalina.Session;
 
 import com.youname.dao.UserDao;
+import com.youname.domain.User;
 import com.youname.service.UserService;
 
 public class LoginServlet extends HttpServlet {
@@ -21,10 +22,11 @@ public class LoginServlet extends HttpServlet {
 	        String username = request.getParameter("username");  
 	        String password = request.getParameter("password");  
 	        String verifyc  = request.getParameter("checkCode");//<span style="font-family: Arial, Helvetica, sans-serif;"></span>//得到表单输入的内容  
-	        String svc =(String) request.getSession().getAttribute("sessionverify");  
+	        String svc =(String) request.getSession().getAttribute("sessionverify"); 
+	        String tocart =(String) request.getSession().getAttribute("tocart");  
 	        request.getSession().setAttribute("entryusername", username);
 	        UserService userService=new UserService();
-	        boolean isLogin=userService.isLogin(username,password);
+	        User user=userService.isLogin(username,password);
 	        boolean isState=userService.isState(username,password);
 	        if(username ==""){  
 	            request.setAttribute("msg1", "请输入用户名");  
@@ -48,19 +50,25 @@ public class LoginServlet extends HttpServlet {
 	            return;  
 	        }  
 	       
-	        if(!isLogin){  
+	        if(user==null){  
 	            request.setAttribute("msg", "用户名或密码错误请重新输入！");  
 	            request.getRequestDispatcher("/login.jsp").forward(request, response);  
 	            return;  
 	        }
-	        if (isLogin&&isState==false) {
+	        if (user!=null&&isState==false) {
 				response.sendRedirect(request.getContextPath()+"/goactive.jsp");
 			}
-	        if(isLogin&&isState){   
-	        	response.sendRedirect(request.getContextPath()+"/index.jsp");
+	        if(user!=null&&isState&&tocart==null){   
 	        	request.getSession().setAttribute("loginusername", username);
+	        	request.getRequestDispatcher("/index.jsp").forward(request, response);
 	        	return; 
-	        }  
+	        }
+	        if (user!=null&&isState&&tocart=="购物车跳过来的") {
+	        	request.getSession().setAttribute("loginusername", username);
+	        	String url="product?method=productInfo&pid="+request.getSession().getAttribute("pid")+"&cid="+request.getSession().getAttribute("cid")+"&currentPage="+request.getSession().getAttribute("currentPage")+"";
+	        	request.getRequestDispatcher("/url").forward(request, response);
+	        	return; 
+			}
 	          
 	}
 

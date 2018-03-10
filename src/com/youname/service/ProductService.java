@@ -2,10 +2,14 @@ package com.youname.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import com.youname.dao.ProductDao;
+import com.youname.domain.Cart;
+import com.youname.domain.CartItem;
 import com.youname.domain.PageBean;
 import com.youname.domain.Product;
+import com.youname.utils.DataSourceUtils;
 
 public class ProductService {
 	//获得热门商品
@@ -56,7 +60,7 @@ public class ProductService {
 		pageBean.setTotalPage(totalPage);
 		
 		//当前页显示的数据
-		//当前页与起始索引9index的关系
+		//当前页与起始索引index的关系
 		int index=(currentPage-1)*currentCount;
 		List<Product> list=null;
 		try {
@@ -70,5 +74,60 @@ public class ProductService {
 		
 		return pageBean;
 	}
-
+	public Product findProductByPid(String pid) {
+		ProductDao dao=new ProductDao();
+		Product product=null;
+		try {
+			product = dao.findProductByPid(pid);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return product;
+	}
+	public List<Cart> selectCartByUserId(String uid) {
+		ProductDao dao=new ProductDao();
+		List<Cart> listCart=null;
+		try {
+			listCart=dao.selectCartByUserId(uid);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return listCart;
+	}
+	public Map<String, CartItem> selectCartItemByCartId(String cartid) {
+		ProductDao dao=new ProductDao();
+		Map<String, CartItem> cartItems=null;
+		try {
+			cartItems = dao.selectCartItemByCartId(cartid);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cartItems;
+	}
+	public void addToCart(Cart cart) {
+		ProductDao dao=new ProductDao();
+		try {
+			//1、开启事务
+			DataSourceUtils.startTransaction();
+			//2、调用dao存储addCart表数据的方法
+			dao.addCart(cart);
+			//3、调用dao存储addCartItem表数据的方法
+			dao.addCartItem(cart);
+			
+		} catch (SQLException e) {
+			try {
+				DataSourceUtils.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				DataSourceUtils.commitAndRelease();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

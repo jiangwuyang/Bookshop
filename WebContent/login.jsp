@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,7 +39,7 @@ font {
     <script type="text/javascript">  
       function change(){  
           var img =document.getElementById("code");  
-          img.src="${pageContext.request.contextPath}/checkCode?a=" +new Date().getTime() ;  
+          img.src="${pageContext.request.contextPath}/user?method=checkCode&a=" +new Date().getTime() ;  
       }  
     </script> 
 </head>
@@ -60,7 +61,7 @@ font {
 					style="width: 440px; border: 1px solid #E7E7E7; padding: 20px 0 20px 30px; border-radius: 5px; margin-top: 60px; background: #fff;">
 					<font>会员登录</font>USER LOGIN
 					<div>&nbsp</div>
-					<form class="form-horizontal" action="${pageContext.request.contextPath }/login" method="post">
+					<form class="form-horizontal" action="${pageContext.request.contextPath }/user?method=login" method="post">
 						<div class="form-group">
 							<label for="username" class="col-sm-2 control-label">用户名</label>
 							<div class="col-sm-6">
@@ -84,7 +85,7 @@ font {
 									placeholder="请输入验证码">
 							</div>
 							<div class="col-sm-3">
-								<a href="javascript:change()"><img id="code" src="/Bookshop/checkCode" style="margin-top:3px"/></a>
+								<a href="javascript:change()"><img id="code" src="${pageContext.request.contextPath }/user?method=checkCode" style="margin-top:3px"/></a>
 							</div>
 							<div style="font-size:15px;color:red;margin-top:6px;margin-left:-2px;font-weight:bold">${msg3}</div>
 						</div>
@@ -101,7 +102,7 @@ font {
 						</div>
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
-								<input type="submit" width="100" value="登录" name="submit"
+									<input type="submit" width="100" value="登录" name="submit"
 									style="background: url('./images/login.gif') no-repeat scroll 0 0 rgba(0, 0, 0, 0); height: 35px; width: 100px; color: white;">
 							</div>
 						</div>

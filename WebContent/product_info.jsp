@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +11,14 @@
 <script src="js/bootstrap.min.js" type="text/javascript"></script>
 <!-- 引入自定义css文件 style.css -->
 <link rel="stylesheet" href="css/style.css" type="text/css" />
+<script type="text/javascript">
+  	function addCart() {
+		var count=$("#count").val();
+		location.href="${pageContext.request.contextPath}/product?method=addProductToCart&pid=${product.pid}&count="+count;
+	}
 
+
+</script>
 <style>
 body {
 	margin-top: 20px;
@@ -32,29 +40,29 @@ body {
 		<div class="row">
 			<div
 				style="border: 1px solid #e4e4e4; width: 930px; margin-bottom: 10px; margin: 0 auto; padding: 10px; margin-bottom: 10px;">
-				<a href="./index.htm">首页&nbsp;&nbsp;&gt;</a> <a href="./蔬菜分类.htm">蔬菜&nbsp;&nbsp;&gt;</a>
-				<a>无公害蔬菜</a>
+				<a href="./index.htm">首页&nbsp;&nbsp;&gt;</a> <a href="${pageContext.request.contextPath}/product?method=productListByCid&cid=${cid}">${category.cname}&nbsp;&nbsp;&gt;</a>
+				<a>${product.pname}</a>
 			</div>
 
 			<div style="margin: 0 auto; width: 950px;">
 				<div class="col-md-6">
 					<img style="opacity: 1; width: 400px; height: 350px;" title=""
 						class="medium"
-						src="image/r___________renleipic_01/bigPic5f3622b8-028a-4e62-a77f-f41a16d715ed.jpg">
+						src="${pageContext.request.contextPath}/${product.pimage}">
 				</div>
 
 				<div class="col-md-6">
 					<div>
-						<strong>大冬瓜</strong>
+						<strong>${product.pname}</strong>
 					</div>
 					<div
 						style="border-bottom: 1px dotted #dddddd; width: 350px; margin: 10px 0 10px 0;">
-						<div>编号：751</div>
+						<div>编号：${product.pid}</div>
 					</div>
 
 					<div style="margin: 10px 0 10px 0;">
-						亿家价: <strong style="color: #ef0101;">￥：4.78元/份</strong> 参 考 价：
-						<del>￥6.00元/份</del>
+						亿家价: <strong style="color: #ef0101;">￥：${product.shop_price}元/份</strong> 参 考 价：
+						<del>￥${product.market_price}元/份</del>
 					</div>
 
 					<div style="margin: 10px 0 10px 0;">
@@ -68,16 +76,18 @@ body {
 
 						<div
 							style="border-bottom: 1px solid #faeac7; margin-top: 20px; padding-left: 10px;">
-							购买数量: <input id="quantity" name="quantity" value="1"
+							购买数量: <input id="count" name="count" value="1"
 								maxlength="4" size="10" type="text">
 						</div>
-
 						<div style="margin: 20px 0 10px 0;; text-align: center;">
-							<a href="cart.htm"> <input
+							<a href="javascript:void(0);"onclick="addCart()"> <input
 								style="background: url('./images/product.gif') no-repeat scroll 0 -600px rgba(0, 0, 0, 0); height: 36px; width: 127px;"
 								value="加入购物车" type="button">
 							</a> &nbsp;收藏商品
 						</div>
+					</div>
+					<div>
+						<a href="${pageContext.request.contextPath}/product?method=productListByCid&cid=${cid}&currentPage=${currentPage}">返回列表页面</a>
 					</div>
 				</div>
 			</div>
@@ -90,7 +100,7 @@ body {
 
 				<div>
 					<img
-						src="image/r___________renleipic_01/bigPic139f030b-d68b-41dd-be6d-b94cc568d3c5.jpg">
+						src="${pageContext.request.contextPath}/${product.pimage}">
 				</div>
 
 				<div

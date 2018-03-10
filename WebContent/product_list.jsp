@@ -42,11 +42,11 @@ body {
 
 		<c:forEach items="${pageBean.list}" var="pro">
 		<div class="col-md-2" style="height:250px">
-			<a href="product_info.htm"> <img src="${pageContext.request.contextPath}/${pro.pimage}"
+			<a href="${pageContext.request.contextPath}/product?method=productInfo&pid=${pro.pid}&cid=${cid}&currentPage=${pageBean.currentPage}"> <img src="${pageContext.request.contextPath}/${pro.pimage}"
 				width="170" height="170" style="display: inline-block;">
 			</a>
 			<p>
-				<a href="product_info.html" style='color: green'>${pro.pname}</a>
+				<a href="${pageContext.request.contextPath}/product?method=productInfo&pid=${pro.pid}&cid=${cid}&currentPage=${pageBean.currentPage}" style='color: green'>${pro.pname}</a>
 			</p>
 			<p>
 				<font color="#FF0000">商城价：&yen;${pro.shop_price}</font>
@@ -65,7 +65,7 @@ body {
 					aria-hidden="true">&laquo;</span></a></li>
 			</c:if>
 			<c:if test="${pageBean.currentPage!=1}">
-			<li><a href="${pageContext.request.contextPath}/productListByCid?cid=${cid}&currentPage=${pageBean.currentPage-1}" aria-label="Previous"><span
+			<li><a href="${pageContext.request.contextPath}/product?method=productListByCid&cid=${cid}&currentPage=${pageBean.currentPage-1}" aria-label="Previous"><span
 			aria-hidden="true">&laquo;</span></a></li>
 			</c:if>
 			
@@ -79,7 +79,7 @@ body {
 						<li class="active"><a href="javascript:void(0);">${page}</a></li>
 					</c:if>
 					<c:if test="${page!=pageBean.currentPage }">
-						<li><a href="${pageContext.request.contextPath}/productListByCid?cid=${cid}&currentPage=${page}">${page}</a></li>
+						<li><a href="${pageContext.request.contextPath}/product?method=productListByCid&cid=${cid}&currentPage=${page}">${page}</a></li>
 					</c:if>
 				
 				</c:forEach>
@@ -90,7 +90,7 @@ body {
 				<span aria-hidden="true">&raquo;</span></a></li>
 			</c:if>
 			<c:if test="${pageBean.currentPage!=pageBean.totalPage}">
-				<li><a href="${pageContext.request.contextPath}/productListByCid?cid=${cid}&currentPage=${pageBean.currentPage+1}" aria-label="Next"> 
+				<li><a href="${pageContext.request.contextPath}/product?method=productListByCid&cid=${cid}&currentPage=${pageBean.currentPage+1}" aria-label="Next"> 
 				<span aria-hidden="true">&raquo;</span></a></li>
 			
 			</c:if>
@@ -116,7 +116,7 @@ body {
 
 	<!--商品浏览记录-->
 	<div
-		style="width: 1210px; margin: 0 auto; padding: 0 9px; border: 1px solid #ddd; border-top: 2px solid #999; height: 246px;">
+		style="width: 1210px; margin: 0 auto; padding: 0 9px; border: 1px solid #ddd; border-top: 2px solid #999; height: 280px;">
 
 		<h4 style="width: 50%; float: left; font: 14px/30px 微软雅黑">浏览记录</h4>
 		<div style="width: 50%; float: right; text-align: right;">
@@ -127,9 +127,22 @@ body {
 		<div style="overflow: hidden;">
 
 			<ul style="list-style: none;">
-				<li
-					style="width: 150px; height: 216; float: left; margin: 0 8px 0 0; padding: 0 18px 15px; text-align: center;"><img
-					src="products/1/cs10001.jpg" width="130px" height="130px" /></li>
+				
+				<c:forEach items="${historyProductList}" var="historyPro">
+					<li
+					style="width: 150px; height: 216; float: left; margin: 0 8px 0 0; padding: 0 18px 15px; text-align: center;">
+					<a href="${pageContext.request.contextPath}/product?method=productInfo&pid=${historyPro.pid}&cid=${cid}&currentPage=${pageBean.currentPage}"><img src="${pageContext.request.contextPath}/${historyPro.pimage}" width="130px" height="130px" /></a>
+				    <p style="margin: 0 0 0;">
+				<a href="${pageContext.request.contextPath}/product?method=productInfo&pid=${historyPro.pid}&cid=${cid}&currentPage=${pageBean.currentPage}" style='color: green'>${historyPro.pname}</a>
+			       </p>
+			       <p>
+				<font color="#FF0000">商城价：&yen;${historyPro.shop_price}</font>
+			      </p>
+				    </li>
+				</c:forEach>
+	
+				
+				
 			</ul>
 
 		</div>

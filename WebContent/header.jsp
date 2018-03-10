@@ -12,13 +12,13 @@
 	</div>
 	<div class="col-md-3" style="padding-top:20px">
 		<ol class="list-inline">
-			<c:if test="${empty loginusername}">
+			<c:if test="${empty user}">
 			<li><a href="login.jsp">登录</a></li>
 			<li><a href="register.jsp">注册</a></li>
 			</c:if>
-			<c:if test="${!empty loginusername}">
-			<li><a href="#">欢迎您,${sessionScope.loginusername}</a></li>
-			<li><a href="${pageContext.request.contextPath }/quitUser">退出账号</a></li>
+			<c:if test="${!empty user}">
+			<li><a href="#">欢迎您,${user.username}</a></li>
+			<li><a href="${pageContext.request.contextPath }/user?method=quitUser">退出账号</a></li>
 			</c:if>
 			<li><a href="cart.jsp">购物车</a></li>
 			<li><a href="order_list.jsp">我的订单</a></li>
@@ -60,10 +60,10 @@
 		$(function () {
 			var content="";
 			$.post(
-				"${pageContext.request.contextPath}/categoryList",
+				"${pageContext.request.contextPath}/product?method=categoryList",
 				function (data) {
 					for(var i=0;i<data.length;i++){
-						content+="<li><a href='${pageContext.request.contextPath}/productListByCid?cid="+data[i].cid+"'>"+data[i].cname+"</a></li>";
+						content+="<li><a href='${pageContext.request.contextPath}/product?method=productListByCid&cid="+data[i].cid+"'>"+data[i].cname+"</a></li>";
 					}
 					//将拼接好的li放置到ul中
 					$("#categoryUl").html(content);

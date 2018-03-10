@@ -1,12 +1,17 @@
 package com.youname.dao;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
+import com.youname.domain.Cart;
+import com.youname.domain.CartItem;
 import com.youname.domain.Product;
 import com.youname.utils.DataSourceUtils;
 
@@ -34,6 +39,38 @@ public class ProductDao {
 			String sql="select * from product where cid=? limit ?,?";
 			List<Product> list=runner.query(sql, new BeanListHandler<Product>(Product.class),cid,index,currentCount);
 			return list;
+		}
+		public Product findProductByPid(String pid) throws SQLException {
+			QueryRunner runner=new QueryRunner(DataSourceUtils.getDataSource());
+			String sql="select * from product where pid=?";
+			return runner.query(sql, new BeanHandler<Product>(Product.class),pid);
+		}
+		public List<Cart> selectCartByUserId(String uid) throws SQLException {
+			QueryRunner runner=new QueryRunner(DataSourceUtils.getDataSource());
+			String sql="select * from cart where uid=?";
+			List<Cart> listCart=runner.query(sql, new BeanListHandler<Cart>(Cart.class),uid);
+			return listCart;
+		}
+		public Map<String, CartItem> selectCartItemByCartId(String cartid) throws SQLException {
+			QueryRunner runner=new QueryRunner(DataSourceUtils.getDataSource());
+			String sql="select * from cartitem where cartid=?";
+			Map<String, CartItem> CartItems=(Map<String, CartItem>) runner.query(sql, new BeanListHandler<CartItem>(CartItem.class),cartid);
+			return CartItems;
+		}
+		public void addCart(Cart  cart) throws SQLException {
+			QueryRunner runner = new QueryRunner();
+			String sql = "insert into cart values(?,?,?)";
+			Connection conn = DataSourceUtils.getConnection();
+			runner.update(conn,sql, cart.getCartid(),cart.getTotal(),cart.getUser().getUid());
+		}
+		public void addCartItem(Cart cart) throws SQLException {
+			QueryRunner runner = new QueryRunner();
+			String sql = "insert into cartitem values(?,?,?,?,?)";
+			Connection conn = DataSourceUtils.getConnection();
+			List<CartItem> cartItem = (List<CartItem>) cart.getCartItems();
+			for(CartItem item : cartItem){
+				runner.update(conn,sql,item.getCartitemid(),item.getCount(),item.getSubtotal(),item.getProduct().getPid(),item.getCart().getCartid());
+			}
 		}
 		
 }
